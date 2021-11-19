@@ -1,8 +1,8 @@
 import math
 import time
+import sys
 from util.log import debug, log, debugMode
 import util.utils as u
-import random
 import requests
 from datetime import datetime, timedelta
 
@@ -34,8 +34,6 @@ def timeGen():  # 上午下午, 2020-01-01, 2020-01-01 10:01
 
 
 class Person:
-    __lastData = {}
-
     def __init__(self, name: str, pwd: str):
         self.name = name
         self.pwd = pwd
@@ -101,79 +99,6 @@ class Person:
     def login(self) -> Session:  # 登录vpn
         return self.loginCas(originUrl=origin, redirectHeader=origin)
 
-    def __queryNear(self, sess: Session) -> bool:  # 上次填写记录
-        sess.headers.update({"referer": reportUrl})
 
-        res = sess.post(
-            url=tempHeader+"/com.sudytech.work.shgcd.jkxxcj.jkxxcj.queryNear.biz.ext?vpn-12-o2-workflow.sues.edu.cn",
-            verify=False
-        )
-        near_list = res.json()["resultData"]
-        if len(near_list) == 0:
-            return False
-        else:
-            self.__lastData = near_list[0]
-            u.lower_json(self.__lastData)
-            return True
-
-    def __queryToday(self, sess: Session) -> bool:  # 是否已经填过
-        sess.headers.update({"referer": reportUrl})
-        ampm, tjsj = timeGen()
-        queryTodayJson = {"params": {'sd': ampm, 'tjsj': tjsj}}
-
-        res = sess.post(
-            url=tempHeader+"/com.sudytech.work.shgcd.jkxxcj.jkxxcj.queryToday.biz.ext?vpn-12-o2-workflow.sues.edu.cn",
-            json=queryTodayJson, verify=False
-        )
-        today_list = res.json()["resultData"]
-        if len(today_list) == 0:
-            return False
-        else:
-            self.__lastData = today_list[0]
-            u.lower_json(self.__lastData)
-            self.__lastData.pop('id')
-            return True
-
-    def __submit(self, sess: Session) -> bool:  # 本次是否填报成功
-        data = self.__lastData
-        data["tw"] = str(round(random.uniform(36.3, 36.7), 1))
-        updateData = {"params": data}
-        log(data["gh"] + ",gentemp:" + data["tw"])
-        finalRes = sess.post(tempHeader+"/com.sudytech.work.shgcd.jkxxcj.jkxxcj.saveOrUpdate.biz.ext?vpn-12-o2-workflow.sues.edu.cn",
-                             json=updateData, verify=False)
-        json = finalRes.json()
-
-        if 'result' not in json:
-            log("No result:"+str(json))
-            return False
-        if json['result']["success"]:
-            return True
-        else:
-            log("Already reported or sever down:"+str(json))
-            return False
-
-    def report(self):  # 是否已经填过, 本次是否成功, 错误信息
-        todayOk = False
-        try:
-            requests.packages.urllib3.disable_warnings()
-            requests.adapters.DEFAULT_RETRIES = 40
-            session = self.login()
-            todayOk = self.__queryToday(session)
-            if not todayOk:
-                if not self.__queryNear(session):
-                    return False, False, "self.name"+"没填过"
-            submitRes = self.__submit(session)
-            return todayOk, submitRes, ""
-
-        except Exception as e:
-            if debugMode:
-                raise e
-            return todayOk, False, str(e)
-
-
-if __name__ == '__main__':
-    import sys
-
-    person = Person(name=sys.argv[1], pwd=sys.argv[2])
-    todayOk, res, err = person.report()
-    log("res:"+str(todayOk or res)+",err:"+err)
+def create() -> Person:
+    return Person(name=sys.argv[1], pwd=sys.argv[2])

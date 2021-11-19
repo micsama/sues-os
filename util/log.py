@@ -8,6 +8,6 @@ def log(s):
     print(f"[{timestamp}]\t{str(s)}")
 
 
-def debug(s: str):
+def debug(s):
     if debugMode:
         log("<Debug>"+s)

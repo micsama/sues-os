@@ -60,6 +60,7 @@ class Person:
         openUrl: str = origin,  # 要打开的url
         redirectHeader: str = "",  # 重定向前缀
         timeWait: int = 5  # cas登陆完成后等几秒返回
+        weakLogin: False # 是否加密登录
     ) -> Session:
         sess = self.__sess
         sess.headers.update({"origin": originUrl})
@@ -78,22 +79,32 @@ class Person:
         res = sess.get(realUrl, verify=False)
         execution = soup.find("input", {"name": "execution"}).attrs["value"]
         postTarget = originUrl+soup.find("form")["action"]
-        data = {
-            "username": self.name,
-            "password": self.__genRSAPasswd(self.pwd, rsa_e, rsa_m),
-            "execution": execution,
-            "encrypted": "true",
-            "_eventId": "submit",
-            "loginType": "1",
-            "submit": "登 录"
-        }
+        if weakLogin:
+            data = {
+                "username": self.name,
+                "password": self.pwd,
+                "execution": execution,
+                "_eventId": "submit",
+                "loginType": "1",
+                "submit": "登 录"
+            }
+        else:
+            data = {
+                "username": self.name,
+                "password": self.__genRSAPasswd(self.pwd, rsa_e, rsa_m),
+                "execution": execution,
+                "encrypted": "true",
+                "_eventId": "submit",
+                "loginType": "1",
+                "submit": "登 录"
+            }
 
         res = sess.post(postTarget, data, verify=False)
         time.sleep(timeWait)
         return sess
 
     def login(self) -> Session:  # 登录vpn
-        return self.attachCas(originUrl=origin, redirectHeader=origin)
+        return self.attachCas(originUrl=origin, redirectHeader=origin, weakLogin = False)
 
 
 def create() -> Person:

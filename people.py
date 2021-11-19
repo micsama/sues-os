@@ -1,8 +1,7 @@
 import math
 import time
 import sys
-from util.log import debug, log, debugMode
-import util.utils as u
+from util.log import debug
 import requests
 from datetime import datetime, timedelta
 
@@ -13,12 +12,7 @@ rsa_e = "010001"
 rsa_m = "008aed7e057fe8f14c73550b0e6467b023616ddc8fa91846d2613cdb7f7621e3cada4cd5d812d627af6b87727ade4e26d26208b7326815941492b2204c3167ab2d53df1e3a2c9153bdb7c8c2e968df97a5e7e01cc410f92c4c2c2fba529b3ee988ebc1fca99ff5119e036d732c368acf8beba01aa2fdafa45b21e4de4928d0d403"
 
 origin = "https://web-vpn.sues.edu.cn"
-vpnPath = "/https/77726476706e69737468656265737421e7f85397213c6747301b9ca98b1b26312700d3d1"
-tempPath = "/default/work/shgcd/jkxxcj"
-tempMainPagePath = "/jkxxcj.jsp"
-
-tempHeader = origin+vpnPath+tempPath
-reportUrl = tempHeader+tempPath
+casHeader = 'https://cas.sues.edu.cn'
 
 
 def timeGen():  # 上午下午, 2020-01-01, 2020-01-01 10:01
@@ -37,6 +31,16 @@ class Person:
     def __init__(self, name: str, pwd: str):
         self.name = name
         self.pwd = pwd
+        self.__sess: Session = Session()
+        requests.packages.urllib3.disable_warnings()
+        requests.adapters.DEFAULT_RETRIES = 40
+        sess = requests.Session()
+        sess.headers.update({
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            "Accept-Encoding": "gzip, deflate",
+            "Accept-Language": "zh-CN,zh;q=0.9",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75",
+        })
 
     def __genRSAPasswd(self, passwd: str, e: str, m: str):
         # 别问我为啥rsa加密要这么写，傻逼cas
@@ -50,23 +54,15 @@ class Person:
         crypted_data = crypted_nr.to_bytes(keylength, byteorder='big')
         return crypted_data.hex()
 
-    def loginCas(
+    def attachCas(
         self,
-        originUrl: str = origin,  # 源url
+        originUrl: str = casHeader,  # 源url
         openUrl: str = origin,  # 要打开的url
         redirectHeader: str = "",  # 重定向前缀
         timeWait: int = 5  # cas登陆完成后等几秒返回
     ) -> Session:
-        requests.packages.urllib3.disable_warnings()
-        requests.adapters.DEFAULT_RETRIES = 40
-        sess = requests.Session()
-        sess.headers.update({
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            "Accept-Encoding": "gzip, deflate",
-            "Accept-Language": "zh-CN,zh;q=0.9",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75",
-            "origin": originUrl
-        })
+        sess = self.__sess
+        sess.headers.update({"origin": originUrl})
 
         # 打开网页
         res = sess.get(openUrl, verify=False)
@@ -97,7 +93,7 @@ class Person:
         return sess
 
     def login(self) -> Session:  # 登录vpn
-        return self.loginCas(originUrl=origin, redirectHeader=origin)
+        return self.attachCas(originUrl=origin, redirectHeader=origin)
 
 
 def create() -> Person:

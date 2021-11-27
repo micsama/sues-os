@@ -2,7 +2,7 @@ import people
 from bs4 import BeautifulSoup
 from util.log import log
 
-__base = 'https://epay.sues.edu.cn'
+__base = 'https://web-vpn.sues.edu.cn/https/77726476706e69737468656265737421f5e7408569237d556d468ca88d1b203b'
 # 查
 __bill = __base + '/epay/wxpage/wanxiao/eleresult'
 
@@ -14,10 +14,11 @@ __elecItem = {
 }
 
 if __name__ == '__main__':
-    sess = people.genSess()
+    sess = people.create().login()
     res = sess.post(__bill, params=__elecItem)
     soup = BeautifulSoup(res.content, "lxml")
     log(soup.input['left-degree'])
+
 
 # 楼栋id列表 buiId就是楼id
 # 0: {buiId: "1", buiName: "四期20号楼"}

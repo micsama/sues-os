@@ -31,16 +31,7 @@ class Person:
     def __init__(self, name: str, pwd: str):
         self.name = name
         self.pwd = pwd
-        self.__sess: Session = Session()
-        requests.packages.urllib3.disable_warnings()
-        requests.adapters.DEFAULT_RETRIES = 40
-        sess = requests.Session()
-        sess.headers.update({
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            "Accept-Encoding": "gzip, deflate",
-            "Accept-Language": "zh-CN,zh;q=0.9",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75",
-        })
+        self.__sess: Session = genSess()
 
     def __genRSAPasswd(self, passwd: str, e: str, m: str):
         # 别问我为啥rsa加密要这么写，傻逼cas
@@ -93,8 +84,22 @@ class Person:
         return sess
 
     def login(self) -> Session:  # 登录vpn
-        return self.attachCas(originUrl=origin, redirectHeader=origin, encryptedLogin=True)
+        return self.attachCas(originUrl=origin, redirectHeader=origin, encryptedLogin=False)
 
 
 def create() -> Person:
     return Person(name=sys.argv[1], pwd=sys.argv[2])
+
+
+def genSess() -> Session:
+    sess = Session()
+    requests.packages.urllib3.disable_warnings()
+    requests.adapters.DEFAULT_RETRIES = 40
+    sess = requests.Session()
+    sess.headers.update({
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75",
+    })
+    return sess

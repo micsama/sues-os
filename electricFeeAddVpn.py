@@ -4,7 +4,6 @@
 # ！！！！！！
 # 不同点是最后要加一个 VPN/CAS 的密码作为传入参数
 
-from util.log import log
 from util.utils import getStartArgs
 from electricFeeAdd import changeBase, feeAdd, findNowBill
 import people

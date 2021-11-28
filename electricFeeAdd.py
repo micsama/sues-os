@@ -14,37 +14,28 @@ import easyocr
 from util.log import debug, log
 from util.utils import getStartArgs
 
-__base = 'https://epay.sues.edu.cn'
+base = 'https://epay.sues.edu.cn'
+
+
+def changeBase(newBase: str):
+    global base,__code,__login,__bill,__prePay,__realPay
+    base = newBase
+    __code = base+'/epay/codeimage?'+str(random.randint(1001, 9998))
+    __login = base+'/epay/j_spring_security_check'
+    __bill = base+'/epay/electric/queryelectricbill'
+    __prePay = base+'/epay/electric/load4paidelectricbill'
+    __realPay = base+'/epay/electric/payconfirm'
+
+
 # 验证码
-__code = __base+'/epay/codeimage?'+str(random.randint(1001, 9998))
+__code = base+'/epay/codeimage?'+str(random.randint(1001, 9998))
 # 登录
-__login = __base+'/epay/j_spring_security_check'
+__login = base+'/epay/j_spring_security_check'
 # 查
-__bill = __base+'/epay/electric/queryelectricbill'
+__bill = base+'/epay/electric/queryelectricbill'
 
-__prePay = __base+'/epay/electric/load4paidelectricbill'
-__realPay = __base+'/epay/electric/payconfirm'
-# https://epay.sues.edu.cn/epay/electric/load4paidelectricbill
-# elcsysid: 1
-# elcarea: 1
-# elcbuis: 10
-# roomNo: 2015
-# dumpEnergy: 161.21
-# paidMoney: 0.01
-# route:
-
-
-# <input id="billno" name="billno" type="hidden" value="2c9488a07ce37b3c017"/>
-# <input id="refno" name="refno" type="hidden" value="202111282222"/>
-
-# https://epay.sues.edu.cn/epay/electric/payconfirm
-
-# billno: 2c9488a07ce37b3c017
-# refno: 20211128222
-# status: 0
-# banktype:
-# paypwd: input!
-
+__prePay = base+'/epay/electric/load4paidelectricbill'
+__realPay = base+'/epay/electric/payconfirm'
 
 __elecItem = {
     "sysid": '1',  # 校区: 1 正常公寓, 2 长宁校区, 3 研究生公寓
@@ -68,7 +59,7 @@ def __getCode(sess: Session) -> str:
 @retry(
     stop_max_attempt_number=10  # 最大重试次数, 这玩意是很容易失败的
 )
-def __findNowBill(sess: Session, stuId: str, cardPwd: str) -> str:
+def findNowBill(sess: Session, stuId: str, cardPwd: str) -> str:
     log("正在登录...")
     imgCode = __getCode(sess)
     loginParams = {
@@ -76,16 +67,14 @@ def __findNowBill(sess: Session, stuId: str, cardPwd: str) -> str:
         "j_password": cardPwd,
         "imageCodeName": imgCode,
     }
-    loginRes = sess.post(__login, params=loginParams)
-    # debug("登陆:"+str(loginRes.content))
-
+    sess.post(__login, params=loginParams)
     log("正在查询电费余额...")
     billRes = sess.post(__bill, params=__elecItem)
     log("电费余额(kWh):"+str(billRes.json()['restElecDegree']))
     return str(billRes.json()['restElecDegree'])
 
 
-def __feeAdd(sess: Session, nowBill: str, addFee: str, payPwd: str):
+def feeAdd(sess: Session, nowBill: str, addFee: str, payPwd: str):
     log("本次充值金额: "+addFee)
     prePayJson = {
         'elcsysid': int(__elecItem['sysid']),
@@ -119,16 +108,9 @@ if __name__ == '__main__':
     args = getStartArgs(4)
     stuId, cardPwd, addFee, payPwd = args
     sess = people.genSess()
-    nowBill = __findNowBill(sess, stuId, cardPwd)
+    nowBill = findNowBill(sess, stuId, cardPwd)
     addFee = "%.2f" % float(addFee)
-    __feeAdd(sess, nowBill, addFee, payPwd)
-
-#
-# nowBill = findNowBill(sess)
-
-# log("请输入充值金额(RMB):")
-# addFee = "%.2f" % float(input())
-# log(addFee)
+    feeAdd(sess, nowBill, addFee, payPwd)
 
 
 # 楼栋id列表 buiId就是楼id

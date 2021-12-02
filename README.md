@@ -9,3 +9,27 @@ sues api 开放计划，目前：
 5. [blance.py](blance.py): 校园卡余额api
 6. [people.py](people.py): 基础CAS登录及web-vpn
 7. [autoTemp.py](autoTemp.py) 自动化健康填报
+
+---
+
+requirements:
+
+Windows:
+
+```bash
+pip install requests
+pip install bs4
+pip install lxml
+pip install easyocr
+pip install retrying
+```
+
+Linux/Mac
+
+```bash
+pip3 install requests
+pip3 install bs4
+pip3 install lxml
+pip3 install easyocr
+pip3 install retrying
+```

@@ -10,4 +10,4 @@ def log(s):
 
 def debug(s):
     if debugMode:
-        log("<Debug>"+s)
+        log("<Debug>" + str(s))

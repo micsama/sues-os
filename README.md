@@ -15,7 +15,7 @@ sues api 开放计划，目前：
 ## requirements
 
 - python 3.9
-- [chromedriver](http://chromedriver.storage.googleapis.com/index.html) 下载解压，并将所在目录添加到path
+<!-- - [chromedriver](http://chromedriver.storage.googleapis.com/index.html) 下载解压，并将所在目录添加到path -->
 <!-- - Node enviromrnt
 - python package: -->
 

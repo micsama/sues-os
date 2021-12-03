@@ -14,6 +14,9 @@ sues api 开放计划，目前：
 
 requirements:
 
+- Node enviromrnt
+- python package:
+
 Windows:
 
 ```bash
@@ -22,6 +25,7 @@ pip install bs4
 pip install lxml
 pip install easyocr
 pip install retrying
+pip install PyExecJS
 ```
 
 Linux/Mac
@@ -32,4 +36,5 @@ pip3 install bs4
 pip3 install lxml
 pip3 install easyocr
 pip3 install retrying
+pip3 install PyExecJS
 ```

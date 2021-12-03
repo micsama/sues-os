@@ -1,5 +1,4 @@
 import sys
-from typing import List
 
 
 def lower_json(json_info):
@@ -18,8 +17,8 @@ def lower_json(json_info):
             lower_json(item)
 
 
-def getStartArgs(count: int) -> list[str]:
+def getStartArgs(count: int) -> list:
     res = []
     for c in range(count):
-        res.append(sys.argv[c+1])
+        res.append(sys.argv[c + 1])
     return res

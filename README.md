@@ -33,13 +33,10 @@ pip3 install -r requirements.txt
 
 ## use
 
-如果代码注释里面没说的话，一般使用方式:
+### 运行
 
-```bash
-python xxx.py 学号 密码
-```
-
-否则详见代码注释
+1. 如果代码注释里面没说的话，一般使用方式: `python xxx.py 学号 密码`, 否则详见代码注释。
+2. debug日志输出控制: 位于[util/log.py](util/log.py)
 
 ## Use In Docker
 

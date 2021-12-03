@@ -156,6 +156,8 @@ def __tempConvert(input: dict) -> dict:
         "xq": "",
         "xrywz": "",
     }
+    if "id" not in input:
+        del example["id"]
     for k in example.keys():
         example[k] = input[k]
     example["_ext"] = "{}"

@@ -38,10 +38,14 @@ pip3 install -r requirements.txt
 1. 如果代码注释里面没说的话，一般使用方式: `python xxx.py 学号 密码`, 否则详见代码注释。
 2. debug日志输出控制: 位于[util/log.py](util/log.py)
 
-## Use In Docker
+## Use with Docker
 
-本项目具备一个基于Alpine Linux的Docker镜像，方便部分自动化场景使用。
+本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。 
+
+敬告：Docker将占用您大约1.44GBi网络流量，以及3.55GBi的磁盘容量。
 ```
-dockerHub：dextercai/sues-os-env
+docker pull dextercai/sues-os-env:latest
+docker run -d -it --name="sues-os-env" dextercai/sues-os-env
+docker exec -it sues-os-env /bin/bash
+python3.9 autoTemp.py 114514 1919810
 ```
-或根据项目内dockerfile与WorkFlow自行构建使用。

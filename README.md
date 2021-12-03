@@ -20,21 +20,11 @@ requirements:
 Windows:
 
 ```bash
-pip install requests
-pip install bs4
-pip install lxml
-pip install easyocr
-pip install retrying
-pip install PyExecJS
+pip install -r requirements.txt
 ```
 
 Linux/Mac
 
 ```bash
-pip3 install requests
-pip3 install bs4
-pip3 install lxml
-pip3 install easyocr
-pip3 install retrying
-pip3 install PyExecJS
+pip3 install -r requirements.txt
 ```

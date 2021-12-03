@@ -12,7 +12,7 @@ RUN mkdir /root/sues-os
 WORKDIR /root/sues-os
 COPY ./ ./
 
-RUN pip3.9 install -r requirements.txt –no-cache-dir && pip3.9 install lxml –no-cache-dir && rm -rf ~/.cache
+RUN pip3.9 install -r requirements.txt && pip3.9 install lxml && rm -rf ~/.cache
 
 RUN mkdir -p ~/.EasyOCR/model \
     && dnf install wget -y \

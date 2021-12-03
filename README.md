@@ -14,8 +14,8 @@ sues api 开放计划，目前：
 
 requirements:
 
-- Node enviromrnt
-- python package:
+<!-- - Node enviromrnt
+- python package: -->
 
 Windows:
 

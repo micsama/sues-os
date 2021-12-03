@@ -41,9 +41,11 @@ python xxx.py 学号 密码
 
 否则详见代码注释
 
-## Use In Docker
+## Use with Docker
 
-本项目具备一个基于Fedora Linux的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。
+本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。 
+
+敬告：Docker将占用您大约1.44GBi网络流量，以及3.55GBi的磁盘容量。
 ```
 docker pull dextercai/sues-os-env:latest
 docker run -d -it --name="sues-os-env" dextercai/sues-os-env

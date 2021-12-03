@@ -40,3 +40,11 @@ python xxx.py 学号 密码
 ```
 
 否则详见代码注释
+
+## Use In Docker
+
+本项目具备一个基于Alpine Linux的Docker镜像，方便部分自动化场景使用。
+```
+dockerHub：dextercai/sues-os-env
+```
+或根据项目内dockerfile与WorkFlow自行构建使用。

@@ -19,3 +19,4 @@ RUN mkdir -p ~/.EasyOCR/model \
     && wget -O ~/.EasyOCR/model/craft_mlt_25k.pth https://drcai-generic.pkg.coding.net/PersonalDisk/util/craft_mlt_25k.pth?version=latest \
     && wget -O ~/.EasyOCR/model/english_g2.pth	https://drcai-generic.pkg.coding.net/PersonalDisk/util/english_g2.pth?version=latest
 
+CMD ["/bin/bash"]

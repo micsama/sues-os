@@ -43,8 +43,10 @@ python xxx.py 学号 密码
 
 ## Use In Docker
 
-本项目具备一个基于Alpine Linux的Docker镜像，方便部分自动化场景使用。
+本项目具备一个基于Fedora Linux的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。
 ```
-dockerHub：dextercai/sues-os-env
+docker pull dextercai/sues-os-env:latest
+docker run -d -it --name="sues-os-env" dextercai/sues-os-env
+docker exec -it sues-os-env /bin/bash
+python3.9 autoTemp.py 114514 1919810
 ```
-或根据项目内dockerfile与WorkFlow自行构建使用。

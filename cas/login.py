@@ -1,6 +1,5 @@
 import math
 import time
-import requests
 from requests.sessions import Session
 from bs4 import BeautifulSoup
 
@@ -39,7 +38,7 @@ class CAS:
         redirectHeader: str = "",  # 重定向前缀
         timeWait: int = 5,  # cas登陆完成后等几秒返回
         encryptedLogin: bool = True,  # 加密登录, 强烈不推荐非加密
-    ) -> Session:
+    ):
         sess = self.__sess
         sess.headers.update({"origin": originUrl})
 

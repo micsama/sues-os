@@ -12,8 +12,10 @@ sues api 开放计划，目前：
 
 ---
 
-requirements:
+## requirements
 
+- python 3.9
+- [chromedriver](http://chromedriver.storage.googleapis.com/index.html) 下载解压，并将所在目录添加到path
 <!-- - Node enviromrnt
 - python package: -->
 
@@ -28,3 +30,13 @@ Linux/Mac
 ```bash
 pip3 install -r requirements.txt
 ```
+
+## use
+
+如果代码注释里面没说的话，一般使用方式:
+
+```bash
+python xxx.py 学号 密码
+```
+
+否则详见代码注释

@@ -8,7 +8,7 @@ from util.log import debug
 import requests
 from datetime import datetime, timedelta
 
-from requests.sessions import Session
+from requests import Session
 from bs4 import BeautifulSoup
 
 rsa_e = "010001"
@@ -34,7 +34,7 @@ class Person:
     def __init__(self, name: str, pwd: str):
         self.name = name
         self.pwd = pwd
-        self.__sess: Session = genSess()
+        self.__sess = genSess()
         self.__cas: CAS = CAS(self.__sess, name, pwd)
 
     def __genRSAPasswd(self, passwd: str, e: str, m: str):
@@ -56,7 +56,7 @@ class Person:
         redirectHeader: str = "",  # 重定向前缀
         timeWait: int = 5,  # cas登陆完成后等几秒返回
         encryptedLogin: bool = True,  # 加密登录
-    ) -> Session:
+    ):
         sess = self.__sess
         sess.headers.update({"origin": originUrl})
 
@@ -88,7 +88,7 @@ class Person:
         time.sleep(timeWait)
         return sess
 
-    def login(self) -> Session:  # 登录vpn
+    def login(self):  # 登录vpn
         return self.__cas.attachCas(
             originUrl=origin, redirectHeader=origin, encryptedLogin=True
         )
@@ -98,11 +98,10 @@ def create() -> Person:
     return Person(name=sys.argv[1], pwd=sys.argv[2])
 
 
-def genSess() -> Session:
-    sess = Session()
+def genSess():
     requests.packages.urllib3.disable_warnings()
     requests.adapters.DEFAULT_RETRIES = 40
-    sess = requests.Session()
+    sess = Session()
     sess.headers.update(
         {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",

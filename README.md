@@ -22,12 +22,16 @@ sues api 开放计划，目前：
 Windows:
 
 ```bash
+pip install torch torchvision torchaudio # if no GPU
+
 pip install -r requirements.txt
 ```
 
 Linux/Mac
 
 ```bash
+pip3 install torch==1.10.0+cpu torchvision==0.11.1+cpu torchaudio==0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html  # if no GPU
+
 pip3 install -r requirements.txt
 ```
 

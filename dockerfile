@@ -12,7 +12,9 @@ RUN mkdir /root/sues-os
 WORKDIR /root/sues-os
 COPY ./ ./
 
-RUN pip3.9 install -r requirements.txt && pip3.9 install lxml && rm -rf ~/.cache
+RUN pip3.9 install torch==1.10.0+cpu torchvision==0.11.1+cpu torchaudio==0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html \
+    && pip3.9 install -r requirements.txt \
+    && rm -rf ~/.cache
 
 RUN mkdir -p ~/.EasyOCR/model \
     && dnf install wget -y \

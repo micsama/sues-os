@@ -54,3 +54,10 @@ docker exec -it sues-os-env /bin/bash
 python3.9 autoTemp.py 114514 1919810
 ```
 
+## Build Docker
+
+考虑到DockerHub对免费账户下的镜像存在单位时间内最大拉取量限制，故可以自行利用GithubAction服务进行构建。
+
+如果需要自行构建Docker镜像，请Fork本项目，并在Repo Secrets中妥善配置好`DOCKER_REPO` `DOCKER_USERNAME` `DOCKER_PASSWORD`即可。
+
+其他私有镜像库推送，请参考对应平台手册资料。

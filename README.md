@@ -14,7 +14,7 @@ sues api 开放计划，目前：
 
 ## requirements
 
-- python 3.9
+- python 3.9+
 <!-- - [chromedriver](http://chromedriver.storage.googleapis.com/index.html) 下载解压，并将所在目录添加到path -->
 <!-- - Node enviromrnt
 - python package: -->
@@ -22,12 +22,16 @@ sues api 开放计划，目前：
 Windows:
 
 ```bash
+pip install torch torchvision torchaudio # if no GPU
+
 pip install -r requirements.txt
 ```
 
 Linux/Mac
 
 ```bash
+pip3 install torch==1.10.0+cpu torchvision==0.11.1+cpu torchaudio==0.10.0+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html  # if no GPU
+
 pip3 install -r requirements.txt
 ```
 
@@ -38,11 +42,11 @@ pip3 install -r requirements.txt
 1. 如果代码注释里面没说的话，一般使用方式: `python xxx.py 学号 密码`, 否则详见代码注释。
 2. debug日志输出控制: 位于[util/log.py](util/log.py)
 
-## Use with Docker
+## Use with Docker [@dextercai](https://github.com/dextercai)
 
 本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。 
 
-敬告：Docker将占用您大约1.44GBi网络流量，以及3.55GBi的磁盘容量。
+敬告：Docker将占用您大约1.44GiB网络流量，以及3.55GiB的磁盘容量。
 ```
 docker pull dextercai/sues-os-env:latest
 docker run -d -it --name="sues-os-env" dextercai/sues-os-env

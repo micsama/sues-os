@@ -1,5 +1,7 @@
 # sues-api open source(sues-os)
 
+[![PublicToDokcerHub](https://github.com/zsqw123/sues-os/actions/workflows/BuildEnvDocker.yml/badge.svg)](https://github.com/zsqw123/sues-os/actions/workflows/BuildEnvDocker.yml)
+
 sues api 开放计划，目前：
 
 1. [electricFeeGet.py](electricFeeGet.py): 电费查询api
@@ -55,8 +57,8 @@ python3.9 autoTemp.py 114514 1919810
 ```
 可用镜像地址
 ```
-zsqw123/sues-os-docker
-dextercai/sues-os-env
+zsqw123/sues-os-docker (nightly, with new feature)
+dextercai/sues-os-env (stable)
 ```
 ## Build Docker
 

@@ -38,7 +38,7 @@ pip3 install -r requirements.txt
 1. 如果代码注释里面没说的话，一般使用方式: `python xxx.py 学号 密码`, 否则详见代码注释。
 2. debug日志输出控制: 位于[util/log.py](util/log.py)
 
-## Use with Docker
+## Use with Docker [@dextercai](https://github.com/dextercai)
 
 本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。 
 

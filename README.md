@@ -1,6 +1,6 @@
 # sues-api open source(sues-os)
 
-[![PublicToDokcerHub](https://github.com/zsqw123/sues-os/actions/workflows/BuildEnvDocker.yml/badge.svg)](https://github.com/zsqw123/sues-os/actions/workflows/BuildEnvDocker.yml)
+[![PublicToDokcerHub](https://github.com/SUES-eLib/sues-os/actions/workflows/BuildEnvDocker.yml/badge.svg)](https://github.com/SUES-eLib/sues-os/actions/workflows/BuildEnvDocker.yml)
 
 sues api 开放计划，目前：
 

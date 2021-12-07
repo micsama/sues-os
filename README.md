@@ -46,10 +46,11 @@ pip3 install -r requirements.txt
 
 本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。 
 
-敬告：Docker将占用您大约1.44GiB网络流量，以及3.55GiB的磁盘容量。
+敬告：Docker将占用您大约835.33MiB网络流量。
 ```
 docker pull dextercai/sues-os-env:latest
 docker run -d -it --name="sues-os-env" dextercai/sues-os-env
 docker exec -it sues-os-env /bin/bash
 python3.9 autoTemp.py 114514 1919810
 ```
+

@@ -53,7 +53,11 @@ docker run -d -it --name="sues-os-env" dextercai/sues-os-env
 docker exec -it sues-os-env /bin/bash
 python3.9 autoTemp.py 114514 1919810
 ```
-
+可用镜像地址
+```
+zsqw123/sues-os-docker
+dextercai/sues-os-env
+```
 ## Build Docker
 
 考虑到DockerHub对免费账户下的镜像存在单位时间内最大拉取量限制，故可以自行利用GithubAction服务进行构建。

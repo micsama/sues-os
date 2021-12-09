@@ -6,7 +6,9 @@ from util.log import debug, log, debugMode
 import util.utils as u
 import random
 import requests
+
 from datetime import datetime, timedelta
+from absl import flags, app
 
 from requests.sessions import Session
 
@@ -171,12 +173,22 @@ def __tempConvert(input: dict) -> dict:
 也可以加一个lite选项, 以便使用更轻量的OCR方式(鲁棒性更差), 例如:
     python3 autoTemp.py lite 114514 1919810
 """
-if __name__ == "__main__":
+
+FLAGS = flags.FLAGS
+
+flags.DEFINE_integer('lite', 0 ,'report without easyocr')
+flags.DEFINE_string('usr', None ,'username')
+flags.DEFINE_string('pwd', None ,'password')
+
+def main(argv):
     p = (
-        people.create()
-        if u.argsCount() == 2
-        else people.Person(sys.argv[2], sys.argv[3], True)
+        people.Person(FLAGS.usr, FLAGS.pwd, False)
+        if (FLAGS.lite == 0) and not(u.inLiteDockerEnv())
+        else people.Person(FLAGS.usr, FLAGS.pwd, True)
     )
 
     todayOk, res, err = report(p)
     log("res:" + str(todayOk or res) + ",err:" + err)
+
+if __name__ == "__main__":
+    app.run(main)

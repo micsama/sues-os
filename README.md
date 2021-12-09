@@ -54,7 +54,7 @@ pip3 install -r requirements.txt
 docker pull dextercai/sues-os-env:latest
 docker run -d -it --name="sues-os-env" dextercai/sues-os-env
 docker exec -it sues-os-env /bin/bash
-python3.9 autoTemp.py 114514 1919810
+python3.9 autoTemp.py --lite 1 --usr 1919810 --pwd 114514
 ```
 
 可用镜像地址

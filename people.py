@@ -6,6 +6,7 @@ import sys
 from cas.login import CAS
 from util.log import debug
 import requests
+import lxml
 from datetime import datetime, timedelta
 
 from requests import Session
@@ -31,11 +32,11 @@ def timeGen():  # 上午下午, 2020-01-01, 2020-01-01 10:01
 
 
 class Person:
-    def __init__(self, name: str, pwd: str):
+    def __init__(self, name: str, pwd: str, liteOCR: bool = False):
         self.name = name
         self.pwd = pwd
         self.__sess = genSess()
-        self.__cas: CAS = CAS(self.__sess, name, pwd)
+        self.__cas: CAS = CAS(self.__sess, name, pwd, liteOCR)
 
     def __genRSAPasswd(self, passwd: str, e: str, m: str):
         # 别问我为啥rsa加密要这么写，傻逼cas
@@ -95,7 +96,7 @@ class Person:
 
 
 def create() -> Person:
-    return Person(name=sys.argv[1], pwd=sys.argv[2])
+    return Person(name=sys.argv[1], pwd=sys.argv[2], liteOCR=False)
 
 
 def genSess():

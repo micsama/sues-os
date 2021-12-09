@@ -44,23 +44,28 @@ pip3 install -r requirements.txt
 1. 如果代码注释里面没说的话，一般使用方式: `python xxx.py 学号 密码`, 否则详见代码注释。
 2. debug日志输出控制: 位于[util/log.py](util/log.py)
 
-## Use with Docker [@dextercai](https://github.com/dextercai)
+### Use with Docker [@dextercai](https://github.com/dextercai)
 
-本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。 
+本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。
 
-敬告：Docker将占用您大约835.33MiB网络流量。
-```
+> **敬告**：完整Docker将占用您大约600+MiB网络流量，精简版docker只包含基础的cas/vpn/体温填报等功能
+
+```bash
 docker pull dextercai/sues-os-env:latest
 docker run -d -it --name="sues-os-env" dextercai/sues-os-env
 docker exec -it sues-os-env /bin/bash
 python3.9 autoTemp.py 114514 1919810
 ```
+
 可用镜像地址
+
 ```
-zsqw123/sues-os-docker (nightly, with new feature)
-dextercai/sues-os-env (stable)
+zsqw123/sues-os-docker (完整版，nightly，with new feature)
+zsqw123/sues-os-docker-temp (精简版，nightly，with new feature)
+dextercai/sues-os-env (完整版，stable)
 ```
-## Build Docker
+
+### Build Docker
 
 考虑到DockerHub对免费账户下的镜像存在单位时间内最大拉取量限制，故可以自行利用GithubAction服务进行构建。
 

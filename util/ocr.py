@@ -19,7 +19,9 @@ def ocrUrl(sess: Session, url: str, judge=__isDigit):
     log("ocrRes:{} valid:{}".format(ocrRes, valid))
     return ocrRes, valid
 
-
+# 输入: 图片bytes
+# 返回: 验证码识别结果
+# 这里可以实现你自己的OCR算法
 def ocrBs(bs: bytes) -> str:
     ocrList = reader.readtext(image=bs, detail=0)
     if len(ocrList) == 0:

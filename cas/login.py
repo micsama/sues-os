@@ -4,7 +4,6 @@ from requests.sessions import Session
 from bs4 import BeautifulSoup
 
 from util.log import debug
-from util.ocr import ocrUrl
 
 rsa_e = "010001"
 rsa_m = "008aed7e057fe8f14c73550b0e6467b023616ddc8fa91846d2613cdb7f7621e3cada4cd5d812d627af6b87727ade4e26d26208b7326815941492b2204c3167ab2d53df1e3a2c9153bdb7c8c2e968df97a5e7e01cc410f92c4c2c2fba529b3ee988ebc1fca99ff5119e036d732c368acf8beba01aa2fdafa45b21e4de4928d0d403"
@@ -16,9 +15,10 @@ vpnCap = "https://web-vpn.sues.edu.cn/https/77726476706e69737468656265737421f3f6
 
 
 class CAS:
-    def __init__(self, sess: Session, name: str, pwd: str):
+    def __init__(self, sess: Session, name: str, pwd: str, liteOCR: bool = False):
         self.name = name
         self.pwd = pwd
+        self.liteOCR = liteOCR
         self.__sess: Session = sess
 
     def __genRSAPasswd(self, passwd: str, e: str, m: str):
@@ -64,7 +64,14 @@ class CAS:
             j = 0
             while (not valid) and (j < 15):
                 j += 1
-                cap, valid = ocrUrl(sess, url=vpnCap)
+                if self.liteOCR:
+                    from cas.cas_ocr import cas_ocr_url
+
+                    cap, valid = cas_ocr_url(sess, url=vpnCap), True
+                else:
+                    from util.ocr import ocrUrl
+
+                    cap, valid = ocrUrl(sess, url=vpnCap)
             data = {
                 "username": self.name,
                 "authcode": cap,

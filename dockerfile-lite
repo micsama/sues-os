@@ -1,0 +1,19 @@
+FROM fedora
+
+LABEL MAINTAINER="dextercai"
+
+RUN dnf makecache \
+    && dnf install python3.9 wget -y \
+    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.9 get-pip.py \
+    && dnf clean all
+
+RUN mkdir /root/sues-os
+
+WORKDIR /root/sues-os
+COPY ./ ./
+
+RUN pip3.9 install -r requirements-lite.txt \
+    && rm -rf ~/.cache
+
+CMD ["/bin/bash"]

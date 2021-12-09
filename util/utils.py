@@ -22,3 +22,11 @@ def getStartArgs(count: int) -> list:
     for c in range(count):
         res.append(sys.argv[c + 1])
     return res
+
+
+def argsCount() -> int:
+    return len(sys.argv) - 1
+
+
+if __name__ == "__main__":
+    1

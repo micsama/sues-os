@@ -1,3 +1,4 @@
+import sys
 import people
 import re
 from util.log import log
@@ -162,17 +163,20 @@ def __tempConvert(input: dict) -> dict:
         example[k] = input[k]
     example["_ext"] = "{}"
     return example
-    # example["id"]=1
 
 
+"""
+你可以选择使用两个参数 账号&密码 登录填报
+
+也可以加一个lite选项, 以便使用更轻量的OCR方式(鲁棒性更差), 例如:
+    python3 autoTemp.py lite 114514 1919810
+"""
 if __name__ == "__main__":
-    p = people.create()
-    # try:
-    #     session = p.login()
-    # except Exception as e:
-    #     if debugMode:
-    #         raise e
-    # # chrome = TempChrome(session.cookies.get_dict())
-    # chrome.upload()
+    p = (
+        people.create()
+        if u.argsCount() == 2
+        else people.Person(sys.argv[2], sys.argv[3], True)
+    )
+
     todayOk, res, err = report(p)
     log("res:" + str(todayOk or res) + ",err:" + err)

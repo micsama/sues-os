@@ -1,4 +1,4 @@
-name: PublicToDokcerHub-Temp
+name: PublicToDokcerHub-Lite
 on: [push]
 jobs: 
   build: 

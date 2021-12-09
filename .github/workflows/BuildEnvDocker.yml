@@ -11,5 +11,6 @@ jobs:
           name: ${{ secrets.DOCKER_REPO }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tag_names: full
+          tags: "full"
+          dockerfile: dockerfile
           cache: true

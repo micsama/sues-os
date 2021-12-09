@@ -2,12 +2,6 @@ FROM python:3.9-alpine3.13
 
 LABEL MAINTAINER="dextercai"
 
-RUN dnf makecache \
-    && dnf install python3 wget -y \
-    && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-    && python3 get-pip.py \
-    && dnf clean all
-
 RUN mkdir /root/sues-os
 
 WORKDIR /root/sues-os

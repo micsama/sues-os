@@ -46,24 +46,28 @@ pip3 install -r requirements.txt
 
 ### Use with Docker [@dextercai](https://github.com/dextercai)
 
-本项目具备一个**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。
+本项目具备**小而美**的Docker镜像，方便自动化场景使用。您也可以根据项目内dockerfile与WorkFlow自行构建使用。
 
 > **敬告**：完整Docker将占用您大约600+MiB网络流量，精简版docker只包含基础的cas/vpn/体温填报等功能
 
 ```bash
-docker pull dextercai/sues-os-env:latest
+docker pull dextercai/sues-os-env:full
 docker run -d -it --name="sues-os-env" dextercai/sues-os-env
 docker exec -it sues-os-env /bin/bash
-python3.9 autoTemp.py --lite 1 --usr 1919810 --pwd 114514
+//体温填报需使用flags风格的参数设定
+python3.9 autoTemp.py --lite 1 --usr 1919810 --pwd 114514 // --lite设为1，使用精简识别模式
+python3.9 autoTemp.py --lite 0 --usr 1919810 --pwd 114514 // --lite设为0，使用完整识别模式（仅完整版镜像环境可用）
 ```
 
 可用镜像地址
 
 ```
-zsqw123/sues-os-docker (完整版，nightly，with new feature)
-zsqw123/sues-os-docker-temp (精简版，nightly，with new feature)
-dextercai/sues-os-env (完整版，stable)
+zsqw123/sues-os-docker //(完整版，nightly，with new feature)
+zsqw123/sues-os-docker-temp //(精简版，nightly，with new feature)
+dextercai/sues-os-env:full //(完整版，stable)
+dextercai/sues-os-env:lite //(精简版，stable)
 ```
+
 
 ### Build Docker
 

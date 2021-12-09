@@ -14,31 +14,31 @@ import easyocr
 from util.log import debug, log
 from util.utils import getStartArgs
 
-base = 'https://epay.sues.edu.cn'
+base = "https://epay.sues.edu.cn"
 
 
 def changeBase(newBase: str):
-    global base,__code,__login,__bill,__prePay,__realPay
+    global base, __code, __login, __bill, __prePay, __realPay
     base = newBase
-    __code = base+'/epay/codeimage?'+str(random.randint(1001, 9998))
-    __login = base+'/epay/j_spring_security_check'
-    __bill = base+'/epay/electric/queryelectricbill'
-    __prePay = base+'/epay/electric/load4paidelectricbill'
-    __realPay = base+'/epay/electric/payconfirm'
+    __code = base + "/epay/codeimage?" + str(random.randint(1001, 9998))
+    __login = base + "/epay/j_spring_security_check"
+    __bill = base + "/epay/electric/queryelectricbill"
+    __prePay = base + "/epay/electric/load4paidelectricbill"
+    __realPay = base + "/epay/electric/payconfirm"
 
 
 # 验证码
-__code = base+'/epay/codeimage?'+str(random.randint(1001, 9998))
+__code = base + "/epay/codeimage?" + str(random.randint(1001, 9998))
 # 登录
-__login = base+'/epay/j_spring_security_check'
+__login = base + "/epay/j_spring_security_check"
 # 查
-__bill = base+'/epay/electric/queryelectricbill'
+__bill = base + "/epay/electric/queryelectricbill"
 
-__prePay = base+'/epay/electric/load4paidelectricbill'
-__realPay = base+'/epay/electric/payconfirm'
+__prePay = base + "/epay/electric/load4paidelectricbill"
+__realPay = base + "/epay/electric/payconfirm"
 
 __elecItem = {
-    "sysid": '1',  # 校区: 1 正常公寓, 2 长宁校区, 3 研究生公寓
+    "sysid": "1",  # 校区: 1 正常公寓, 2 长宁校区, 3 研究生公寓
     "elcarea": "1",  # 四期1, 三期2
     "elcbuis": "10",  # 这是楼id 看下方注释找到自己楼的id
     "roomNo": "2015",  # 你宿舍房间号
@@ -47,18 +47,16 @@ __elecItem = {
 
 def __getCode(sess: Session) -> str:
     img = sess.get(__code).content
-    reader = easyocr.Reader(['en'])
+    reader = easyocr.Reader(["en"])
     code = reader.readtext(image=img, detail=0)
     if len(code) < 1:
         return __getCode(sess)
     code = str(code[0]).strip()
-    print("验证码 verify code: "+code)
+    print("验证码 verify code: " + code)
     return code
 
 
-@retry(
-    stop_max_attempt_number=10  # 最大重试次数, 这玩意是很容易失败的
-)
+@retry(stop_max_attempt_number=10)  # 最大重试次数, 这玩意是很容易失败的
 def findNowBill(sess: Session, stuId: str, cardPwd: str) -> str:
     log("正在登录...")
     imgCode = __getCode(sess)
@@ -70,41 +68,44 @@ def findNowBill(sess: Session, stuId: str, cardPwd: str) -> str:
     sess.post(__login, params=loginParams)
     log("正在查询电费余额...")
     billRes = sess.post(__bill, params=__elecItem)
-    log("电费余额(kWh):"+str(billRes.json()['restElecDegree']))
-    return str(billRes.json()['restElecDegree'])
+    log("电费余额(kWh):" + str(billRes.json()["restElecDegree"]))
+    return str(billRes.json()["restElecDegree"])
 
 
 def feeAdd(sess: Session, nowBill: str, addFee: str, payPwd: str):
-    log("本次充值金额: "+addFee)
+    log("本次充值金额: " + addFee)
     prePayJson = {
-        'elcsysid': int(__elecItem['sysid']),
-        'elcarea': int(__elecItem['elcarea']),
-        'elcbuis': int(__elecItem['elcbuis']),
-        'roomNo': int(__elecItem['roomNo']),
-        'dumpEnergy': float(nowBill),
-        'paidMoney': float(addFee),
-        'route': None,
+        "elcsysid": int(__elecItem["sysid"]),
+        "elcarea": int(__elecItem["elcarea"]),
+        "elcbuis": int(__elecItem["elcbuis"]),
+        "roomNo": int(__elecItem["roomNo"]),
+        "dumpEnergy": float(nowBill),
+        "paidMoney": float(addFee),
+        "route": None,
     }
     log("正在获取订单...")
     prePayRes = sess.post(__prePay, params=prePayJson)
     # debug("订单html:"+str(prePayRes.content))
     soup = BeautifulSoup(prePayRes.content, "lxml")
-    billNo = soup.find(id='billno')['value']
-    refNo = soup.find(id='refno')['value']
-    log('充值中...订单编号:'+str(refNo))
+    billNo = soup.find(id="billno")["value"]
+    refNo = soup.find(id="refno")["value"]
+    log("充值中...订单编号:" + str(refNo))
 
     realPayJson = {
-        'billno': billNo,
-        'refno': refNo,
-        'status': 0,
-        'banktype': None,
-        'paypwd': payPwd,
+        "billno": billNo,
+        "refno": refNo,
+        "status": 0,
+        "banktype": None,
+        "paypwd": payPwd,
     }
     payRes = sess.post(__realPay, params=realPayJson)
-    debug(str(payRes.content))
+    if "支付成功" in payRes.text:
+        log("缴费成功")
+    else:
+        debug(payRes.text)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = getStartArgs(4)
     stuId, cardPwd, addFee, payPwd = args
     sess = people.genSess()

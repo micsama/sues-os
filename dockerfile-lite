@@ -5,6 +5,7 @@ LABEL MAINTAINER="dextercai"
 RUN mkdir /root/sues-os
 
 WORKDIR /root/sues-os
+COPY ./ ./
 
 RUN pip3 install -r requirements-lite.txt \
     && rm -rf ~/.cache

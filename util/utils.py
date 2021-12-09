@@ -1,5 +1,5 @@
 import sys
-
+import os
 
 def lower_json(json_info):
     if isinstance(json_info, dict):
@@ -26,6 +26,9 @@ def getStartArgs(count: int) -> list:
 
 def argsCount() -> int:
     return len(sys.argv) - 1
+
+def inLiteDockerEnv() -> bool:
+    return os.getenv('IN_LITE_DOCKER') != None
 
 
 if __name__ == "__main__":

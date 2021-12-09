@@ -1,5 +1,7 @@
 FROM python:3.9.8-slim
 
+ENV IN_LITE_DOCKER=IN_LITE_DOCKER
+
 LABEL MAINTAINER="dextercai"
 
 RUN mkdir /root/sues-os

@@ -1,4 +1,4 @@
-name: PublicToDokcerHub
+name: PublicToDokcerHub-Lite
 on: [push]
 jobs: 
   build: 
@@ -11,6 +11,6 @@ jobs:
           name: ${{ secrets.DOCKER_REPO }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: "full"
-          dockerfile: dockerfile
+          dockerfile: dockerfile-lite 
+          tags: "lite"
           cache: true

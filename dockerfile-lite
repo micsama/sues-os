@@ -1,19 +1,18 @@
-FROM fedora
+FROM python:3.9-alpine3.13
 
 LABEL MAINTAINER="dextercai"
 
 RUN dnf makecache \
-    && dnf install python3.9 wget -y \
+    && dnf install python3 wget -y \
     && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
-    && python3.9 get-pip.py \
+    && python3 get-pip.py \
     && dnf clean all
 
 RUN mkdir /root/sues-os
 
 WORKDIR /root/sues-os
-COPY ./ ./
 
-RUN pip3.9 install -r requirements-lite.txt \
+RUN pip3 install -r requirements-lite.txt \
     && rm -rf ~/.cache
 
 CMD ["/bin/bash"]
